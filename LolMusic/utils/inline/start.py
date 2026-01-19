@@ -27,7 +27,7 @@ def start_panel(_):
         [
             InlineKeyboardButton(
                 text="📢 ᴜᴘᴅᴀᴛᴇs ᴄʜᴀɴɴᴇʟ", 
-                url="https://t.me/dmcatelegram"
+                url="https://t.me/about_deadly_venom"
             )
         ]
     ]
