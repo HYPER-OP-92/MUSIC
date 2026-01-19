@@ -34,8 +34,13 @@ ASSUSERNAME = getenv("ASSUSERNAME", "Oyekanhaa")
 
 MONGO_DB_URI = getenv("MONGO_DB_URI", None)
 
-# Sirf wahi keys list mein jayengi jo empty nahi hain
-YOUTUBE_API_KEYS = [k.strip() for k in ["AIzaSyCFv5iwf9_CZKYcifMFK43zMZ78NH5GwE8, AIzaSyBlbkp4_XbjOZAMG6mr_QMmurBW9tcpu0s, AIzaSyCHRfOCjo77bI3HYRvwIjxIke2TuFT_vh8"] if k and k.strip()]
+# --- FIX START ---
+# Bot ko 'API_KEY' (singular) chahiye jo string ho
+API_KEY = getenv("API_KEY", "AIzaSyCFv5iwf9_CZKYcifMFK43zMZ78NH5GwE8, AIzaSyBlbkp4_XbjOZAMG6mr_QMmurBW9tcpu0s, AIzaSyCHRfOCjo77bI3HYRvwIjxIke2TuFT_vh8")
+
+# Keys ko list mein convert karne ke liye
+YOUTUBE_API_KEYS = [k.strip() for k in API_KEY.split(",") if k.strip()]
+# --- FIX END ---
 
 HEROKU_APP_NAME = getenv("HEROKU_APP_NAME")
 HEROKU_API_KEY = getenv("HEROKU_API_KEY")
@@ -129,11 +134,3 @@ if SUPPORT_CHANNEL and not re.match("(?:http|https)://", SUPPORT_CHANNEL):
 
 if SUPPORT_CHAT and not re.match("(?:http|https)://", SUPPORT_CHAT):
     raise SystemExit("[ERROR] - SUPPORT_CHAT url is wrong. Must start with https://")
-
-# ======================================================
-# ©️ 2025-26 All Rights Reserved by Revange 😎
-
-# 🧑‍💻 Developer : t.me/dmcatelegram
-# 🔗 Source link : https://github.com/hexamusic/LolMusic
-# 📢 Telegram channel : t.me/dmcatelegram
-# =======================================================
