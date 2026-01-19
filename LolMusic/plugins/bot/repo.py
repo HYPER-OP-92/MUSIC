@@ -1,73 +1,81 @@
 # ======================================================
-# ©️ 2025-26 All Rights Reserved by Revange 😎
-
-# 🧑‍💻 Developer : t.me/dmcatelegram
-# 🔗 Source link : https://github.com/hexamusic/LolMusic
-# 📢 Telegram channel : t.me/dmcatelegram
+# ©️ 2025-26 ᴘʀᴇᴍɪᴜᴍ ᴄᴏᴅᴇ ʙʏ ʀᴇᴠᴀɴɢᴇ 😎
+# 🧑‍💻 ᴅᴇᴠᴇʟᴏᴘᴇʀ : t.me/dmcatelegram
+# 📢 ᴄʜᴀɴɴᴇʟ : t.me/dmcatelegram
+# 🛠 ᴜᴘᴅᴀᴛᴇᴅ : ᴠᴇʀsɪᴏɴ 3.0 (ᴀᴅᴠᴀɴᴄᴇᴅ ᴜɪ)
 # =======================================================
 
+import time
 from pyrogram import filters
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 from LolMusic import app
 import config
-from LolMusic.utils.errors import capture_err
-import httpx 
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from LolMusic.utils.formatters import get_readable_time
 
-start_txt = """**<u>❃ ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ ᴛᴇᴧᴍ ᴧᴧʀᴜᴍɪ ʀᴇᴘᴏs ❃</u>
+# Start Time for Uptime
+start_time = time.time()
 
-✼ ʀᴇᴘᴏ ɪs ɴᴏᴡ ᴘʀɪᴠᴧᴛᴇ ᴅᴜᴅᴇ 😌
- 
-❉  ʏᴏᴜ ᴄᴧɴ мʏ ᴜsᴇ ᴘᴜʙʟɪᴄ ʀᴇᴘᴏs !! 
+# Premium Text Design
+REPO_TEXT = """
+✨ **━━━━━━『 ᴋɪʀᴜ ᴛᴇᴄʜ 』━━━━━━** ✨
 
-✼ || ᴄᴏɴᴛᴧᴄᴛ :-  [˹ ᴍᴀᴀɴᴀᴠ sᴜᴘᴘᴏʀᴛ ᴄʜᴧᴛ ˼ ](https://t.me/maanavbots) ||
- 
-❊ ʀᴜɴ 24x7 ʟᴧɢ ϝʀᴇᴇ ᴡɪᴛʜᴏᴜᴛ sᴛᴏᴘ**
+👋 **ʜᴇʟʟᴏ {name}!**
+ᴛʜɪs ɪs ᴏᴜʀ ᴏғғɪᴄɪᴀʟ ʀᴇᴘᴏsɪᴛᴏʀʏ ᴍᴀɪɴᴛᴇɴᴀɴᴄᴇ ʜᴜʙ.
+
+🚀 **sᴛᴀᴛᴜs:** ᴏɴʟɪɴᴇ & ʟᴀɢ-ғʀᴇᴇ
+🛠 **ᴠᴇʀsɪᴏɴ:** ᴠ3.0 (ᴜʟᴛɪᴍᴀᴛᴇ)
+⏳ **ᴜᴘᴛɪᴍᴇ:** `{uptime}`
+
+📢 **ɴᴏᴛᴇ:** sᴏᴍᴇ ʀᴇᴘᴏs ᴀʀᴇ ᴄᴜʀʀᴇɴᴛʟʏ **ᴘʀɪᴠᴀᴛᴇ** 🔐 
+ғᴏʀ sᴇᴄᴜʀɪᴛʏ ʀᴇᴀsᴏɴs. ʏᴏᴜ ᴄᴀɴ ᴜsᴇ ᴏᴜʀ ᴘᴜʙʟɪᴄ ʙᴏᴛs ʙᴇʟᴏᴡ.
+
+━━━━━━━『 **ᴏᴜʀ ᴘʀᴏᴊᴇᴄᴛs** 』━━━━━━━
 """
 
-
-
-
 @app.on_message(filters.command("repo"))
-async def start(_, msg):
+async def repo_command(_, message: Message):
+    # Calculate Uptime
+    current_time = time.time()
+    uptime_seconds = int(round(current_time - start_time))
+    uptime = get_readable_time(uptime_seconds)
+
+    # Stylish Buttons
     buttons = [
-    [
-        InlineKeyboardButton("𝐌𝐀𝐀𝐍𝐀𝐕 𝐗 𝐌𝐔𝐒𝐈𝐂", url="https://t.me/maanavXmuzicbot"),
-        InlineKeyboardButton("𝐀𝐍𝐈𝐊𝐀𝐀 𝐗 𝐌𝐔𝐒𝐈𝐂", url="https://t.me/anikaaXmuzicbot")
-    ],
-    [
-        InlineKeyboardButton("𝐀𝐍𝐔𝐏𝐑𝐈𝐘𝐀 𝐗 𝐌𝐔𝐒𝐈𝐂", url="https://t.me/cuteanubot"),
-        InlineKeyboardButton("ᴄʜᴧᴛ ʙᴏᴛ", url="https://t.me/maanavbots")
-    ],
-    [
-        InlineKeyboardButton("ᴜsᴇʀ ʙᴏᴛ", url="https://t.me/maanavbots"),
-        InlineKeyboardButton("sᴘᴧᴍ ʙᴏᴛ", url="https://t.me/maanavbots")
-    ],
-    [
-        InlineKeyboardButton("sᴇssɪᴏɴ ʙᴏᴛ", url="https://t.me/maanavbots"),
-        InlineKeyboardButton("sᴇssɪᴏɴ ʜᴧᴄᴋ", url="https://t.me/maanavbots")
-    ],
-    [
-        InlineKeyboardButton("ʙᴧɴᴧʟʟ ʙᴏᴛ", url="https://t.me/maanavbots"),
-        InlineKeyboardButton("ᴧɴʏ ɪssᴜᴇ", user_id=config.OWNER_ID)
-    ],
-    [
-        InlineKeyboardButton("✙ ᴀᴅᴅ ᴍᴇ ᴛᴏ ʏᴏᴜʀ ᴄʜᴧᴛ ✙", url=f"https://t.me/{app.username}?startgroup=true")
+        [
+            InlineKeyboardButton("🤖 ᴀᴀʀᴜ ᴍᴜsɪᴄ", url="https://t.me/aaru_music_rbot"),
+            InlineKeyboardButton("💬 sᴜᴘᴘᴏʀᴛ ᴄʜᴀᴛ", url="https://t.me/NOBITA_SUPPORT")
+        ],
+        [
+            InlineKeyboardButton("🤖 ɴɪᴋᴋᴜ ᴍᴜᴢɪᴄ", url="https://t.me/NIKKU_ROBOT"),
+            InlineKeyboardButton("💬 sᴜᴘᴘᴏʀᴛ ᴄʜᴀᴛ", url="https://t.me/NOBITA_SUPPORT")
+        ],
+        [
+            InlineKeyboardButton("🤖 ʀᴀᴅʜᴀ ᴍᴜsɪᴄ", url="https://t.me/RADHAVIBEBOT"),
+            InlineKeyboardButton("💬 sᴜᴘᴘᴏʀᴛ ᴄʜᴀᴛ", url="https://t.me/NOBITA_SUPPORT")
+        ],
+        [
+            InlineKeyboardButton("🤖 sʜʏᴀᴍ ᴍᴜsɪᴄ", url="https://t.me/SHYAMVIBEBOT"),
+            InlineKeyboardButton("💬 sᴜᴘᴘᴏʀᴛ ᴄʜᴀᴛ", url="https://t.me/NOBITA_SUPPORT")
+        ],
+        [
+            InlineKeyboardButton("👨‍💻 ᴅᴇᴠᴇʟᴏᴘᴇʀ", user_id=config.OWNER_ID),
+            InlineKeyboardButton("📢 ᴄʜᴀɴɴᴇʟ", url="https://t.me/VnioxTechApi")
+        ],
+        [
+            InlineKeyboardButton("➕ ᴀᴅᴅ ᴍᴇ ᴛᴏ ʏᴏᴜʀ ɢʀᴏᴜᴘ ➕", url=f"https://t.me/{app.username}?startgroup=true")
+        ]
     ]
-]
-    
-    reply_markup = InlineKeyboardMarkup(buttons)
-    
-    await msg.reply_photo(
-        photo="https://files.catbox.moe/7enu2i.jpg",
-        caption=start_txt,
-        reply_markup=reply_markup
+
+    # Sending the message with a premium photo
+    await message.reply_photo(
+        photo="https://graph.org/file/46a60562ff98cc1180237-0b722292cd1bcca02f.jpg",
+        caption=REPO_TEXT.format(
+            name=message.from_user.mention,
+            uptime=uptime
+        ),
+        reply_markup=InlineKeyboardMarkup(buttons)
     )
 
 # ======================================================
-# ©️ 2025-26 All Rights Reserved by Revange 😎
-
-# 🧑‍💻 Developer : t.me/dmcatelegram
-# 🔗 Source link : https://github.com/hexamusic/LolMusic
-# 📢 Telegram channel : t.me/dmcatelegram
-# =======================================================
+# ⚡ ᴘᴏᴡᴇʀᴇᴅ ʙʏ : @dmcatelegram
+# ======================================================

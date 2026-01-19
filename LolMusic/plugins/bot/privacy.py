@@ -13,11 +13,11 @@ from LolMusic import app
 @app.on_message(filters.command("privacy"))
 async def privacy_command(client: Client, message: Message):
     await message.reply_photo(
-        photo="https://files.catbox.moe/75au5f.jpg",
+        photo="https://graph.org/file/46a60562ff98cc1180237-0b722292cd1bcca02f.jpg",
         caption="**➻ ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ ᴧᴧʀᴜᴍɪ ʙᴏᴛꜱ ᴘʀɪᴠᴀᴄʏ ᴘᴏʟɪᴄʏ.**\n\n**⊚ ᴄʟɪᴄᴋ ᴛʜᴇ ʙᴇʟᴏᴡ ʙᴜᴛᴛᴏɴ ᴛʜᴇɴ ꜱᴇᴇ ʙᴏᴛs ᴘʀɪᴠᴧᴄʏ ᴘᴏʟɪᴄʏ 🔏**",
         reply_markup=InlineKeyboardMarkup(
             [
-                [InlineKeyboardButton("ᴘʀɪᴠᴧᴄʏ ᴘᴏʟɪᴄʏ", url="https://telegra.ph/Privacy-Policy--REVANGE-Bots-by-ALPHA-BABY-08-06")]
+                [InlineKeyboardButton("ᴘʀɪᴠᴧᴄʏ ᴘᴏʟɪᴄʏ", url="https://telegra.ph/BOTS--PRIVACY-POLICY-01-19")]
             ]
         )
     )
