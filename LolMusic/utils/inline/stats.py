@@ -60,7 +60,7 @@ def back_stats_buttons(_):
             [
                 InlineKeyboardButton(
                     text="📢 sᴜᴘᴘᴏʀᴛ ᴄʜᴀᴛ",
-                    url="https://t.me/maanavbots"
+                    url="https://t.me/NOBITA_SUPPORT"
                 )
             ]
         ]
