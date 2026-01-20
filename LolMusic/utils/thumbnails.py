@@ -1,191 +1,126 @@
-# ======================================================
-# ©️ 2025-26 All Rights Reserved by Revange 😎
-
-# 🧑‍💻 Developer : t.me/dmcatelegram
-# 🔗 Source link : https://github.com/hexamusic/LolMusic
-# 📢 Telegram channel : t.me/dmcatelegram
-# =======================================================
-
 import os
 import re
-import random
-import aiohttp
 import aiofiles
-import traceback
+import aiohttp
+from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont
+from youtubesearchpython.__future__ import VideosSearch 
+from config import YOUTUBE_IMG_URL
 
-from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont, ImageOps
-from youtubesearchpython.__future__ import VideosSearch
-from config import TELEGRAM_AUDIO_URL
+# Helper function for resizing
+def resize_image(image, width, height):
+    return image.resize((width, height), Image.LANCZOS)
 
-
-def changeImageSize(maxWidth, maxHeight, image):
-    ratio = min(maxWidth / image.size[0], maxHeight / image.size[1])
-    newSize = (int(image.size[0] * ratio), int(image.size[1] * ratio))
-    return image.resize(newSize, Image.LANCZOS)  
-
-
-def truncate(text, max_chars=50):
-    words = text.split()
-    text1, text2 = "", ""
-    for word in words:
-        if len(text1 + " " + word) <= max_chars and not text2:
-            text1 += " " + word
-        else:
-            text2 += " " + word
-    return [text1.strip(), text2.strip()]
-
-
-def fit_text(draw, text, max_width, font_path, start_size, min_size):
-    size = start_size
-    while size >= min_size:
-        font = ImageFont.truetype(font_path, size)
-        if draw.textlength(text, font=font) <= max_width:
-            return font
-        size -= 1
-    return ImageFont.truetype(font_path, min_size)
-
-
-def get_overlay_content_box(overlay_img: Image.Image) -> tuple:
+# Function to generate thumbnail
+async def gen_thumb(videoid):
+    cache_path = f"cache/{videoid}.png"
+    temp_path = f"cache/thumb{videoid}.png"
     
-    alpha = overlay_img.split()[-1]  
-    threshold = 20
-    binary = alpha.point(lambda p: 255 if p > threshold else 0)
-    return binary.getbbox()
+    if os.path.isfile(cache_path):
+        return cache_path
 
+    if not os.path.exists("cache"):
+        os.makedirs("cache")
 
-async def get_thumb(videoid: str):
     url = f"https://www.youtube.com/watch?v={videoid}"
     try:
         results = VideosSearch(url, limit=1)
-        result = (await results.next())["result"][0]
+        res_data = await results.next()
+        
+        if not res_data["result"]:
+            return YOUTUBE_IMG_URL
 
+        result = res_data["result"][0]
         title = re.sub(r"\W+", " ", result.get("title", "Unsupported Title")).title()
-        duration = result.get("duration", "00:00")
+        duration = result.get("duration", "Unknown")
         thumbnail = result["thumbnails"][0]["url"].split("?")[0]
         views = result.get("viewCount", {}).get("short", "Unknown Views")
-        channel = result.get("channel", {}).get("name", "Unknown Channel")
 
-      
-        thumb_path = f"cache/thumb{videoid}.png"
-        os.makedirs("cache", exist_ok=True)
+        # Download thumbnail
+        async with aiohttp.ClientSession() as session:
+            async with session.get(thumbnail) as resp:
+                if resp.status == 200:
+                    async with aiofiles.open(temp_path, mode="wb") as f:
+                        await f.write(await resp.read())
+
+        # Image Processing
+        youtube = Image.open(temp_path).convert("RGBA")
         
+        # --- LIGHT BLUE THEME COLORS ---
+        GLOW_COLOR = "#00BFFF"   # Deep Sky Blue (Glow ke liye)
+        BORDER_COLOR = "#87CEEB" # Sky Blue (Border aur text ke liye)
+        # -------------------------------
+
+        # Background
+        bg = resize_image(youtube, 1280, 720)
+        bg = bg.filter(ImageFilter.GaussianBlur(25))
+        bg = ImageEnhance.Brightness(bg).enhance(0.3)
+
+        # Main Thumbnail
+        thumb_width, thumb_height = 840, 460
+        main_thumb = resize_image(youtube, thumb_width, thumb_height)
         
-        try:
-            async with aiohttp.ClientSession() as session:
-                async with session.get(thumbnail) as resp:
-                    if resp.status == 200:
-                        async with aiofiles.open(thumb_path, mode="wb") as f:
-                            await f.write(await resp.read())
-            youtube = Image.open(thumb_path)
-        except Exception as e:
-            print(f"[Thumbnail Download Failed] Using default image. Error: {e}")
-            async with aiohttp.ClientSession() as session:
-                async with session.get(TELEGRAM_AUDIO_URL) as resp:
-                    if resp.status == 200:
-                        async with aiofiles.open(thumb_path, mode="wb") as f:
-                            await f.write(await resp.read())
-            youtube = Image.open(thumb_path)
-        
-        image1 = changeImageSize(1280, 720, youtube).convert("RGBA")
-
-       
-        gradient = Image.new("RGBA", image1.size, (0, 0, 0, 255))
-        enhancer = ImageEnhance.Brightness(image1.filter(ImageFilter.GaussianBlur(5)))
-        blurred = enhancer.enhance(0.3)
-        background = Image.alpha_composite(gradient, blurred)
-
-        draw = ImageDraw.Draw(background)
-        font_path = "LolMusic/assets/font3.ttf"
-
-       
-        player = Image.open("LolMusic/assets/sona.png").convert("RGBA").resize((1280, 720))
-        overlay_box = get_overlay_content_box(player) 
-        content_x1, content_y1, content_x2, content_y2 = overlay_box
-        background.paste(player, (0, 0), player)
-
-        
-        thumb_size = int((content_y2 - content_y1) * 0.55)
-        thumb_x = content_x1 + 76
-        thumb_y = content_y1 + ((content_y2 - content_y1 - thumb_size) // 2) + 40
-
-        mask = Image.new('L', (thumb_size, thumb_size), 0)
+        mask = Image.new("L", (thumb_width, thumb_height), 0)
         draw_mask = ImageDraw.Draw(mask)
-        radius = int(thumb_size * 0.25)
-        draw_mask.rounded_rectangle([(0, 0), (thumb_size, thumb_size)], radius=radius, fill=255)
+        draw_mask.rounded_rectangle([(0, 0), (thumb_width, thumb_height)], radius=25, fill=255)
+        main_thumb.putalpha(mask)
 
-        thumb_square = youtube.resize((thumb_size, thumb_size))
-        thumb_square.putalpha(mask)
-        background.paste(thumb_square, (thumb_x, thumb_y), thumb_square)
+        center_x, center_y = 640, 320
+        thumb_x = center_x - (thumb_width // 2)
+        thumb_y = center_y - (thumb_height // 2)
 
+        # Glow Layer (Light Blue)
+        glow_layer = Image.new("RGBA", (1280, 720), (0, 0, 0, 0))
+        draw_glow = ImageDraw.Draw(glow_layer)
+        draw_glow.rounded_rectangle(
+            [(thumb_x - 15, thumb_y - 15), (thumb_x + thumb_width + 15, thumb_y + thumb_height + 15)],
+            radius=35, fill=GLOW_COLOR
+        )
+        glow_layer = glow_layer.filter(ImageFilter.GaussianBlur(20))
+        bg.paste(glow_layer, (0, 0), glow_layer)
+
+        # Border Layer (Light Blue)
+        border_layer = Image.new("RGBA", (1280, 720), (0, 0, 0, 0))
+        draw_border = ImageDraw.Draw(border_layer)
+        draw_border.rounded_rectangle(
+            [(thumb_x - 5, thumb_y - 5), (thumb_x + thumb_width + 5, thumb_y + thumb_height + 5)],
+            radius=30, fill=BORDER_COLOR
+        )
+        bg.paste(border_layer, (0, 0), border_layer)
+        bg.paste(main_thumb, (thumb_x, thumb_y), main_thumb)
+
+        draw = ImageDraw.Draw(bg)
         
-        text_x = thumb_x + thumb_size + 30
-        title_y = thumb_y + 10
-        info_y = title_y + int(thumb_size * 0.33)
-        duration_y = info_y + int(thumb_size * 0.28) - 10  
-        icons_y = duration_y + 40  
-
-        def truncate_text(text, max_chars=30):
-            return (text[:max_chars - 3] + "...") if len(text) > max_chars else text
-
-        short_title = truncate_text(title, max_chars=20)
-        short_channel = truncate_text(channel, max_chars=20)
-
-       
-        title_font = fit_text(draw, short_title, 600, font_path, 42, 28)
-        info_font = ImageFont.truetype("LolMusic/assets/font.ttf", 22)
-        duration_font = ImageFont.truetype("LolMusic/assets/font.ttf", 20)
-
-        
-        draw.text((text_x, title_y), short_title, (255, 255, 255), font=title_font)
-        info_text = f"{short_channel} • {views}"
-        draw.text((text_x, info_y), info_text, (200, 200, 200), font=info_font)
-
-        
-        duration_text = duration if ":" in duration else f"00:{duration.zfill(2)}"
-        
-       
-        bar_length = 260
-        bar_height = 5
-        bar_x = text_x
-        bar_y = duration_y
-        draw.line([(bar_x, bar_y), (bar_x + bar_length, bar_y)], fill="gray", width=bar_height)
-        draw.line([(bar_x, bar_y), (bar_x + bar_length // 3, bar_y)], fill="red", width=bar_height)
-        # Circle on progress
-        draw.ellipse([(bar_x + bar_length // 3 - 5, bar_y - 5), (bar_x + bar_length // 3 + 5, bar_y + 5)], fill="red")
-        
-        
-        draw.text((bar_x, bar_y + 10), "00:00", fill=(200,200,200), font=duration_font)
-        draw.text((bar_x + bar_length - 40, bar_y + 10), f"{duration_text}", fill=(200,200,200), font=duration_font)
-
-        
-        icons_path = "LolMusic/assets/play_icons.png"
-        if os.path.isfile(icons_path):
-            icons_img = Image.open(icons_path).convert("RGBA")
-            icons_w, icons_h = icons_img.size
-            scale_factor = 0.4
-            new_size = (int(icons_w*scale_factor), int(icons_h*scale_factor))
-            icons_img = icons_img.resize(new_size, Image.LANCZOS)
-            icons_x = text_x
-            background.paste(icons_img, (icons_x, icons_y), icons_img)
-         
         try:
-            os.remove(f"cache/thumb{videoid}.png")
+            font_title = ImageFont.truetype("BIGFM/assets/font.ttf", 45)
+            font_details = ImageFont.truetype("BIGFM/assets/font2.ttf", 30)
         except:
-            pass
+            font_title = ImageFont.load_default()
+            font_details = ImageFont.load_default()
 
-        tpath = f"cache/{videoid}.png"
-        background.save(tpath)
-        return tpath
+        if len(title) > 40:
+            title = title[:37] + "..."
+
+        # Draw Title and Stats (Using Light Blue for stats)
+        draw.text((320, 580), title, fill="white", font=font_title)
+        stats_text = f"Views: {views} | Duration: {duration}"
+        draw.text((320, 640), stats_text, fill=BORDER_COLOR, font=font_details)
+
+        if os.path.exists(temp_path):
+            os.remove(temp_path)
+            
+        bg.convert("RGB").save(cache_path, "PNG")
+        return cache_path
 
     except Exception as e:
-        print(f"[get_thumb Error] {e}")
-        traceback.print_exc()
-        return None
+        print(f"Error: {e}")
+        return YOUTUBE_IMG_URL
 
-# ======================================================
-# ©️ 2025-26 All Rights Reserved by Revange 😎
-
-# 🧑‍💻 Developer : t.me/dmcatelegram
-# 🔗 Source link : https://github.com/hexamusic/LolMusic
-# 📢 Telegram channel : t.me/dmcatelegram
-# =======================================================
+# Function to get quick thumbnail URL
+async def get_qthumb(vidid):
+    try:
+        url = f"https://www.youtube.com/watch?v={vidid}"
+        results = VideosSearch(url, limit=1)
+        res_data = await results.next()
+        return res_data["result"][0]["thumbnails"][0]["url"].split("?")[0]
+    except Exception:
+        return YOUTUBE_IMG_URL
