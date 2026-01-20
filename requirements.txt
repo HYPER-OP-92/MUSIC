@@ -56,3 +56,4 @@ googlesearch-python
 sympy
 PyGithub
 proxies
+oauth2client
