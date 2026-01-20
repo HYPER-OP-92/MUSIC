@@ -1,8 +1,7 @@
 # ======================================================
-# ©️ 2025-26 All Rights Reserved by Revange �
-
+# ©️ 2025-26 All Rights Reserved by Revange 😎
 # 🧑‍💻 Developer : t.me/dmcatelegram
-# � Source link : https://github.com/hexamusic/LolMusic
+# 🔗 Source link : https://github.com/hexamusic/LolMusic
 # 📢 Telegram channel : t.me/dmcatelegram
 # =======================================================
 
@@ -17,7 +16,7 @@ class BUTTONS(object):
     [
         InlineKeyboardButton("• ᴀᴄᴛɪᴏɴ •", callback_data="TOOL_BACK HELP_06"),
         InlineKeyboardButton("• ᴀɴᴛɪ-ғʟᴏᴏᴅ •", callback_data="TOOL_BACK HELP_11"),
-        InlineKeyboardButton("• ᴀᴘᴘʀᴏᴠᴀʟ •", callback_data="TOOL_BACK HELP_12"),
+        InlineKeyboardButton("• ᴀpproval •", callback_data="TOOL_BACK HELP_12"),
     ],
     [
         InlineKeyboardButton("• ᴄʜᴀᴛ-ɢᴘᴛ •", callback_data="TOOL_BACK HELP_01"),
@@ -30,59 +29,49 @@ class BUTTONS(object):
         InlineKeyboardButton("• ᴘᴜʀɢᴇ •", callback_data="TOOL_BACK HELP_13"),
     ],
     [
-        InlineKeyboardButton("• sᴛɪᴄᴋᴇʀ•", callback_data="TOOL_BACK HELP_05"),
+        InlineKeyboardButton("• sᴛɪᴄᴋᴇʀ •", callback_data="TOOL_BACK HELP_05"),
         InlineKeyboardButton("• ᴛᴀɢ-ᴀʟʟ •", callback_data="TOOL_BACK HELP_04"),
         InlineKeyboardButton("• ᴛᴏᴏʟs •", callback_data="TOOL_BACK HELP_10"),
     ],
     [
         InlineKeyboardButton("• ᴠᴄ-ᴛᴏᴏʟs •", callback_data="TOOL_BACK HELP_14"),
-        InlineKeyboardButton("• ᴡʜɪsᴘᴇʀ•", callback_data="TOOL_BACK HELP_02"),
+        InlineKeyboardButton("• ᴡʜɪsᴘᴇʀ •", callback_data="TOOL_BACK HELP_02"),
     ],
     [
-        InlineKeyboardButton("⌯ ʙᴧᴄᴋ ⌯", callback_data="MAIN_CP"),
+        InlineKeyboardButton("⌯ ʙᴀᴄᴋ ᴛᴏ ʜᴏᴍᴇ ⌯", callback_data="MAIN_CP"),
     ]
 ]
     
-    
-    
-    
     PBUTTON = [
         [
-            InlineKeyboardButton("˹ ᴄσηᴛᴧᴄᴛ ˼", url="https://t.me/"),
-            InlineKeyboardButton("⌯ ʙᴧᴄᴋ ⌯", callback_data="MAIN_CP"),
+            InlineKeyboardButton("˹ ᴄᴏɴᴛᴀᴄᴛ ˼", url="god_hyper_op"),
+            InlineKeyboardButton("⌯ ʙᴀᴄᴋ ⌯", callback_data="MAIN_CP"),
         ]
-        ]
+    ]
     
     ABUTTON = [
         [
-            InlineKeyboardButton("˹ sυᴘᴘσʀᴛ ˼", url="https://t.me/NOBITA_SUPPORT"),
-            InlineKeyboardButton("˹ υᴘᴅᴧᴛєs ˼", url="https://t.me/about_deadly_venom"),
+            InlineKeyboardButton("˹ sᴜᴘᴘᴏʀᴛ ˼", url="https://t.me/about_deadly_venom"),
+            InlineKeyboardButton("˹ ᴜᴘᴅᴀᴛᴇs ˼", url="https://t.me/NOBITA_SUPPORT"),
         ],
         [  
-            InlineKeyboardButton("˹ ᴘʀɪᴠᴧᴄʏ ˼", url="https://telegra.ph/BOTS--PRIVACY-POLICY-01-19"),
-            InlineKeyboardButton("⌯ ʙᴧᴄᴋ ⌯", callback_data="settingsback_helper"),
+            InlineKeyboardButton("˹ ᴘʀɪᴠᴀᴄʏ ˼", url="https://telegra.ph/BOTS--PRIVACY-POLICY-01-19"),
+            InlineKeyboardButton("⌯ ʙᴀᴄᴋ ⌯", callback_data="settingsback_helper"),
         ]
-        ]
+    ]
     
     SBUTTON = [
         [
-            InlineKeyboardButton("ϻᴜѕɪᴄ", callback_data="settings_back_helper"),
-            InlineKeyboardButton("ϻᴧηᴧɢєϻєηᴛ", callback_data="TOOL_CP"),
+            InlineKeyboardButton("✨ ᴍᴜsɪᴄ ✨", callback_data="settings_back_helper"),
+            InlineKeyboardButton("⚙️ ᴍᴀɴᴀɢᴇᴍᴇɴᴛ ⚙️", callback_data="TOOL_CP"),
         ],
-        
         [
-            InlineKeyboardButton("⌯ ʙᴧᴄᴋ ᴛσ ʜσϻє ⌯", callback_data="settingsback_helper"),
-            
+            InlineKeyboardButton("⌯ ʙᴀᴄᴋ ᴛᴏ ʜᴏᴍᴇ ⌯", callback_data="settingsback_helper"),
         ]
-        ]
-
-
-
+    ]
 
 # ======================================================
 # ©️ 2025-26 All Rights Reserved by Revange 😎
-
 # 🧑‍💻 Developer : t.me/dmcatelegram
-# 🔗 Source link : https://github.com/hexamusic/LolMusic
 # 📢 Telegram channel : t.me/dmcatelegram
 # =======================================================
